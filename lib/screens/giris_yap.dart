@@ -57,7 +57,7 @@ class GirisScreenState extends State<GirisScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Log In'),
+        title: const Text('Giriş Yap'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

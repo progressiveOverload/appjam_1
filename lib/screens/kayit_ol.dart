@@ -1,3 +1,4 @@
+import 'package:appjam_1/screens/giris_yap.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart'; // Import Get library
@@ -27,13 +28,19 @@ class KayitOlScreenState extends State<KayitOlScreen> {
       );
 
       // Show a snackbar
-      Get.snackbar('Success', 'Signed up successfully');
+      Get.snackbar(
+        'Hoşgedin', // title
+        'Başarılı bir şekilde kayıt yaptınız!', // message
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
 
       // Delay navigation to show the snackbar
       await Future.delayed(const Duration(seconds: 1));
 
       // Navigate to the sign-up page
-      Get.offAll(() => const KayitOlScreen()); // Use Get to navigate
+      Get.offAll(() => const GirisScreen()); // Use Get to navigate
     } catch (e) {
       // Handle errors here, e.g., show error message to the user
     }
