@@ -1,8 +1,9 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart'; // Import Get library
+import 'package:get/get.dart';
 
+import 'my_profile.dart'; // Import Get library
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -14,7 +15,6 @@ class MainMenu extends StatefulWidget {
 class MainMenuState extends State<MainMenu> {
   int _currentIndex = 0; //default index of a first screen
   final _pageController = PageController();
-
 
   Future<void> _signOut(BuildContext context) async {
     try {
@@ -28,28 +28,41 @@ class MainMenuState extends State<MainMenu> {
 
   @override
   Widget build(BuildContext context) {
-  
     return PopScope(
       canPop: false,
       // Prevents the user from going back
       child: Scaffold(
         drawer: Drawer(
+          
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
                 decoration: const BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.purple,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                   
                     const Text(
-                      'Hoşgeldin! \n',
+                      'Hoşgeldin!',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                       ),
+                    ),
+                    CircleAvatar(
+                      radius: 25.0,
+                      backgroundImage: FirebaseAuth
+                                  .instance.currentUser?.photoURL !=
+                              null
+                          ? NetworkImage(
+                              FirebaseAuth.instance.currentUser!.photoURL!)
+                          : const AssetImage('assets/user.png') as ImageProvider<
+                              Object>, // Add your default profile image path here
+                      // backgroundColor: Colors.transparent,
                     ),
                     Text(
                       FirebaseAuth.instance.currentUser?.email ?? '',
@@ -62,20 +75,29 @@ class MainMenuState extends State<MainMenu> {
                 ),
               ),
               ListTile(
-                title: const Text('Item 1'),
+                title: const Text('Ayarlar'),
                 onTap: () {
-                  // Handle item 1 tap
-                },
-              ),
-              ListTile(
-                title: const Text('Item 2'),
-                onTap: () {
-                  // Handle item 2 tap
+                  Get.snackbar('Yakında', "",
+                      // title// message
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.black,
+                      colorText: Colors.white,
+                      duration: const Duration(seconds: 1),
+                      margin: const EdgeInsets.all(12));
                 },
               ),
               ListTile(
                 title: const Text('Çıkış Yap'),
-                onTap: () => _signOut(context), // Call _signOut method on tap
+                onTap: () {
+                  _signOut(context);
+                  Get.snackbar('Çıkış Yapıldı', "",
+                      // title// message
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.black,
+                      colorText: Colors.white,
+                      duration: const Duration(seconds: 1),
+                      margin: const EdgeInsets.all(12));
+                }, // Call _signOut method on tap
               ),
             ],
           ),
@@ -92,7 +114,7 @@ class MainMenuState extends State<MainMenu> {
           children: const <Widget>[
             Center(child: Text('Home Page')),
             Center(child: Text('Maps Page')),
-            Center(child: Text('Profile Page')),
+            MyProfile()
             // Add more pages here for more tabs
           ],
         ),
@@ -105,18 +127,18 @@ class MainMenuState extends State<MainMenu> {
           items: <BottomNavyBarItem>[
             BottomNavyBarItem(
               icon: const Icon(Icons.home),
-              title: const Text('Home'),
-              activeColor: Colors.red,
+              title: const Text('Ana Sayfa'),
+              activeColor: Colors.purple,
             ),
             BottomNavyBarItem(
               icon: const Icon(Icons.map),
-              title: const Text('Maps'),
-              activeColor: Colors.purpleAccent,
+              title: const Text('Haritam'),
+              activeColor: Colors.purple,
             ),
             BottomNavyBarItem(
               icon: const Icon(Icons.person),
-              title: const Text('Profile'),
-              activeColor: Colors.pink,
+              title: const Text('Profilim'),
+              activeColor: Colors.purple,
             ),
             // Add more items for more tabs
           ],

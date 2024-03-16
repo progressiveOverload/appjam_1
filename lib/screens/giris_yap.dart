@@ -36,6 +36,8 @@ class GirisScreenState extends State<GirisScreen> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
+          duration: const Duration(seconds: 1),
+          margin: const EdgeInsets.all(12)
       );
     } catch (e) {
       // Handle errors here, e.g., show error message to the user

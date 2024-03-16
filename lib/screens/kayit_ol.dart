@@ -34,6 +34,8 @@ class KayitOlScreenState extends State<KayitOlScreen> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
+          duration: const Duration(seconds: 1),
+          margin: const EdgeInsets.all(12)
       );
 
       // Delay navigation to show the snackbar
