@@ -26,8 +26,14 @@ class SignUpScreenState extends State<SignUpScreen> {
         password: _passwordController.text.trim(),
       );
 
-      // Navigate to the main_menu screen after successful sign up
-      Get.toNamed('/main_menu'); // Use Get library to navigate
+      // Show a snackbar
+      Get.snackbar('Success', 'Signed up successfully');
+
+      // Delay navigation to show the snackbar
+      await Future.delayed(const Duration(seconds: 1));
+
+      // Navigate to the sign-up page
+      Get.offAll(() => const SignUpScreen()); // Use Get to navigate
     } catch (e) {
       // Handle errors here, e.g., show error message to the user
     }
