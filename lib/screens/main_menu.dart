@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart'; // Import Get library
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
+
+  @override
+  MainMenuState createState() => MainMenuState();
+}
+
+class MainMenuState extends State<MainMenu> {
+  int _bottomNavIndex = 0; //default index of a first screen
 
   Future<void> _signOut(BuildContext context) async {
     try {
@@ -74,6 +82,17 @@ class MainMenu extends StatelessWidget {
         ),
         body: const Center(
           child: Text('Hello World'),
+        ),
+        bottomNavigationBar: AnimatedBottomNavigationBar(
+          icons: const [
+            Icons.map,
+            Icons.person
+          ], //add more icons here for more tabs
+          activeIndex: _bottomNavIndex,
+          gapLocation: GapLocation.center,
+          leftCornerRadius: 24,
+          rightCornerRadius: 24,
+          onTap: (index) => setState(() => _bottomNavIndex = index),
         ),
       ),
     );
