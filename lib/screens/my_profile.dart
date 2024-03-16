@@ -64,7 +64,7 @@ class _MyProfileState extends State<MyProfile> {
                               .instance.currentUser!.photoURL!.isNotEmpty)
                       ? NetworkImage(
                           FirebaseAuth.instance.currentUser!.photoURL!)
-                      : const AssetImage('assets/profile.png') as ImageProvider<
+                      : const AssetImage('assets/user.png') as ImageProvider<
                           Object>, // Replace 'assets/profile.png' with your asset's path
             ),
             const SizedBox(

@@ -42,9 +42,9 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             final User? user = snapshot.data;
             if (user == null) {
-              return const GirisScreen(); // No need for const here
+              return const GirisScreen();
             } else {
-              return const MainMenu(); // No need for const here
+              return const MainMenu(); 
             }
           } else {
             return const CircularProgressIndicator();
