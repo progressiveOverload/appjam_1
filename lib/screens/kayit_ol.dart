@@ -29,8 +29,8 @@ class KayitOlScreenState extends State<KayitOlScreen> {
 
       // Show a snackbar
       Get.snackbar(
-        'Hoşgedin', // title
-        'Başarılı bir şekilde kayıt yaptınız!', // message
+        'Kayıt Başarılı', // title
+        'Giriş ekranına yönlendiriliyorsun', // message
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
