@@ -89,7 +89,7 @@ class MainMenuState extends State<MainMenu> {
           onPageChanged: (index) {
             setState(() => _currentIndex = index);
           },
-          children: <Widget>[
+          children: const <Widget>[
             Center(child: Text('Home Page')),
             Center(child: Text('Maps Page')),
             Center(child: Text('Profile Page')),
@@ -104,18 +104,18 @@ class MainMenuState extends State<MainMenu> {
           },
           items: <BottomNavyBarItem>[
             BottomNavyBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
+              icon: const Icon(Icons.home),
+              title: const Text('Home'),
               activeColor: Colors.red,
             ),
             BottomNavyBarItem(
-              icon: Icon(Icons.map),
-              title: Text('Maps'),
+              icon: const Icon(Icons.map),
+              title: const Text('Maps'),
               activeColor: Colors.purpleAccent,
             ),
             BottomNavyBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Profile'),
+              icon: const Icon(Icons.person),
+              title: const Text('Profile'),
               activeColor: Colors.pink,
             ),
             // Add more items for more tabs
