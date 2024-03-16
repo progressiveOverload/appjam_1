@@ -1,4 +1,6 @@
 import 'package:appjam_1/screens/giris_yap.dart';
+import 'package:appjam_1/screens/maps.dart';
+import 'package:appjam_1/screens/my_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,6 +33,8 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/login', page: () => const GirisScreen()),
         GetPage(name: '/mainMenu', page: () => const MainMenu()),
+        GetPage(name: '/maps', page: () => const MapScreen()),
+        GetPage(name: '/myprofile', page: () => const MyProfile()),
       ],
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
