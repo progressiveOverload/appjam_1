@@ -1,7 +1,8 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart'; // Import Get library
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -11,7 +12,9 @@ class MainMenu extends StatefulWidget {
 }
 
 class MainMenuState extends State<MainMenu> {
-  int _bottomNavIndex = 0; //default index of a first screen
+  int _currentIndex = 0; //default index of a first screen
+  final _pageController = PageController();
+
 
   Future<void> _signOut(BuildContext context) async {
     try {
@@ -25,6 +28,7 @@ class MainMenuState extends State<MainMenu> {
 
   @override
   Widget build(BuildContext context) {
+  
     return PopScope(
       canPop: false,
       // Prevents the user from going back
@@ -80,19 +84,42 @@ class MainMenuState extends State<MainMenu> {
           centerTitle: true,
           title: const Text('Lokal Gezgin v1.0.0'),
         ),
-        body: const Center(
-          child: Text('Hello World'),
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() => _currentIndex = index);
+          },
+          children: <Widget>[
+            Center(child: Text('Home Page')),
+            Center(child: Text('Maps Page')),
+            Center(child: Text('Profile Page')),
+            // Add more pages here for more tabs
+          ],
         ),
-        bottomNavigationBar: AnimatedBottomNavigationBar(
-          icons: const [
-            Icons.map,
-            Icons.person
-          ], //add more icons here for more tabs
-          activeIndex: _bottomNavIndex,
-          gapLocation: GapLocation.center,
-          leftCornerRadius: 24,
-          rightCornerRadius: 24,
-          onTap: (index) => setState(() => _bottomNavIndex = index),
+        bottomNavigationBar: BottomNavyBar(
+          selectedIndex: _currentIndex,
+          onItemSelected: (index) {
+            setState(() => _currentIndex = index);
+            _pageController.jumpToPage(index);
+          },
+          items: <BottomNavyBarItem>[
+            BottomNavyBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
+              activeColor: Colors.red,
+            ),
+            BottomNavyBarItem(
+              icon: Icon(Icons.map),
+              title: Text('Maps'),
+              activeColor: Colors.purpleAccent,
+            ),
+            BottomNavyBarItem(
+              icon: Icon(Icons.person),
+              title: Text('Profile'),
+              activeColor: Colors.pink,
+            ),
+            // Add more items for more tabs
+          ],
         ),
       ),
     );

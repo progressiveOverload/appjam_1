@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // Use GetMaterialApp instead of MaterialApp
-      title: 'Flutter Sign Up/Login',
+      title: 'Lokal Gezgin',
       
       getPages: [
         GetPage(name: '/login', page: () => const GirisScreen()),
