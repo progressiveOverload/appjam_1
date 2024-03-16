@@ -1,15 +1,18 @@
+import 'package:appjam_1/screens/kayit_ol.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart'; // Import Get library
+import 'package:get/get.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+import 'main_menu.dart'; // Import Get library
+
+class GirisScreen extends StatefulWidget {
+  const GirisScreen({Key? key}) : super(key: key);
 
   @override
-  SignUpScreenState createState() => SignUpScreenState();
+  GirisScreenState createState() => GirisScreenState();
 }
 
-class SignUpScreenState extends State<SignUpScreen> {
+class GirisScreenState extends State<GirisScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -21,33 +24,40 @@ class SignUpScreenState extends State<SignUpScreen> {
     });
 
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-
-      // Show a snackbar
-      Get.snackbar('Success', 'Signed up successfully');
-
-      // Delay navigation to show the snackbar
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Navigate to the sign-up page
-      Get.offAll(() => const SignUpScreen()); // Use Get to navigate
+      // Navigate to the main menu after successful login using Get
+      Get.to(() => const MainMenu());
+      Get.snackbar(
+        'Hoşgedin', // title
+        'Başarılı bir şekilde giriş yaptınız!', // message
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
     } catch (e) {
       // Handle errors here, e.g., show error message to the user
     }
 
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _goToSignUpScreen() {
+    Get.to(() => const KayitOlScreen());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        centerTitle: true,
+        title: const Text('Log In'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -62,7 +72,7 @@ class SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 20.0),
             TextFormField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Şifre'),
               obscureText: true,
             ),
             const SizedBox(height: 20.0),
@@ -70,8 +80,12 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ? const CircularProgressIndicator()
                 : TextButton(
                     onPressed: _submitForm,
-                    child: const Text('Sign Up'),
+                    child: const Text('Giriş Yap'),
                   ),
+            TextButton(
+              onPressed: _goToSignUpScreen,
+              child: const Text('Hesabın yok mu, Kayıt ol!'),
+            ),
           ],
         ),
       ),

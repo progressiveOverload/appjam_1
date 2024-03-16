@@ -1,17 +1,15 @@
-import 'package:appjam_1/screens/main_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart'; // Import Get library
-// Import your MainMenuScreen
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class KayitOlScreen extends StatefulWidget {
+  const KayitOlScreen({Key? key}) : super(key: key);
 
   @override
-  SignInScreenState createState() => SignInScreenState();
+  KayitOlScreenState createState() => KayitOlScreenState();
 }
 
-class SignInScreenState extends State<SignInScreen> {
+class KayitOlScreenState extends State<KayitOlScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -23,12 +21,19 @@ class SignInScreenState extends State<SignInScreen> {
     });
 
     try {
-      await _auth.signInWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      // Navigate to the main menu after successful login using Get
-      Get.to(() => const MainMenu());
+
+      // Show a snackbar
+      Get.snackbar('Success', 'Signed up successfully');
+
+      // Delay navigation to show the snackbar
+      await Future.delayed(const Duration(seconds: 1));
+
+      // Navigate to the sign-up page
+      Get.offAll(() => const KayitOlScreen()); // Use Get to navigate
     } catch (e) {
       // Handle errors here, e.g., show error message to the user
     }
@@ -42,7 +47,7 @@ class SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign In'),
+        title: const Text('Kayıt Ol'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -65,7 +70,7 @@ class SignInScreenState extends State<SignInScreen> {
                 ? const CircularProgressIndicator()
                 : TextButton(
                     onPressed: _submitForm,
-                    child: const Text('Sign In'),
+                    child: const Text('Kayıt Ol'),
                   ),
           ],
         ),

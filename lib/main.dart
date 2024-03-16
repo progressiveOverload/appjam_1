@@ -1,3 +1,4 @@
+import 'package:appjam_1/screens/giris_yap.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,7 +6,7 @@ import 'package:get/get.dart';
 
 import 'firebase/firebase_options.dart';
 import 'screens/main_menu.dart';
-import 'screens/sign_up.dart'; // Import Get library
+// Import Get library
 
 Future<void> main() async {
   // Initialize Firebase
@@ -26,14 +27,18 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       // Use GetMaterialApp instead of MaterialApp
       title: 'Flutter Sign Up/Login',
-      theme: ThemeData(),
+      
+      getPages: [
+        GetPage(name: '/login', page: () => const GirisScreen()),
+        GetPage(name: '/mainMenu', page: () => const MainMenu()),
+      ],
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final User? user = snapshot.data;
             if (user == null) {
-              return const SignUpScreen(); // No need for const here
+              return const GirisScreen(); // No need for const here
             } else {
               return const MainMenu(); // No need for const here
             }
