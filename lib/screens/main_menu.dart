@@ -1,11 +1,10 @@
-import 'package:appjam_1/screens/example.dart';
-import 'package:appjam_1/screens/maps.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import 'my_profile.dart'; // Import Get library
+import "maps.dart";
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -44,13 +43,13 @@ class MainMenuState extends State<MainMenu> {
                   color: Colors.purple,
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                    
-                    Text(
-                      'Hoşgeldin ${FirebaseAuth.instance.currentUser!.displayName}!',
-                      style: const TextStyle(
+                    const Text(
+                      'Hoşgeldin!',
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                       ),
@@ -70,7 +69,7 @@ class MainMenuState extends State<MainMenu> {
                       FirebaseAuth.instance.currentUser?.email ?? '',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 18,
                       ),
                     ),
                   ],
@@ -114,7 +113,7 @@ class MainMenuState extends State<MainMenu> {
             setState(() => _currentIndex = index);
           },
           children: const <Widget>[
-            Example(),
+            Center(child: Text('Home Page')),
             MapScreen(),
             MyProfile()
             // Add more pages here for more tabs
