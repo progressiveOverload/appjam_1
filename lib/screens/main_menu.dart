@@ -43,7 +43,7 @@ class MainMenuState extends State<MainMenu> {
                   color: Colors.purple,
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                    
