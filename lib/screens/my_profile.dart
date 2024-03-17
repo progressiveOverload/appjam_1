@@ -46,6 +46,7 @@ class _MyProfileState extends State<MyProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Profilim'),
       ),
       body: Center(
@@ -67,6 +68,10 @@ class _MyProfileState extends State<MyProfile> {
                       : const AssetImage('assets/user.png') as ImageProvider<
                           Object>, // Replace 'assets/profile.png' with your asset's path
             ),
+            const SizedBox(
+              height: 12,
+            ),
+            Text(FirebaseAuth.instance.currentUser!.displayName ?? ''),
             const SizedBox(
               height: 12,
             ),
