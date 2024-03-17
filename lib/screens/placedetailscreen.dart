@@ -1,56 +1,85 @@
-  import 'package:flutter/material.dart';
-  import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-  class PlaceDetailsScreen extends StatelessWidget {
-    final String placeName;
-    final String placeRating;
-    final String placePhoto;
-    final String API;
-    final String defaultPhotoURL; // Varsayılan fotoğraf URL'si
+class PlaceDetailsScreen extends StatelessWidget {
+  final String placeName;
+  final String placeRating;
+  final String placePhoto;
+  final String API;
+  final String defaultPhotoURL; // Varsayılan fotoğraf URL'si
 
-    const PlaceDetailsScreen({Key? key, required this.placeName, required this.placePhoto, required this.placeRating, required this.API, required this.defaultPhotoURL}) : super(key: key);
+  const PlaceDetailsScreen({
+    Key? key,
+    required this.placeName,
+    required this.placePhoto,
+    required this.placeRating,
+    required this.API,
+    required this.defaultPhotoURL,
+  }) : super(key: key);
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-
-        appBar: AppBar(
-          title: Text('Place Details'),
-        ),
-        body: Center(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Place Details'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0), // Body'nin üstüne 20 birim padding ekleyelim
+        child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Fotoğrafı göstermek için Image widget'ı
-              FutureBuilder<http.Response>(
-                future: http.get(Uri.parse('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$placePhoto&key=$API')),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return Image.network(defaultPhotoURL); // Hata durumunda varsayılan fotoğrafı göster
-                    }
-                    if (snapshot.data!.statusCode == 200) {
-                      // Fotoğraf başarıyla alındıysa
-                      return Image.memory(snapshot.data!.bodyBytes); // Fotoğrafı göster
+              Container(
+                height: 300, // Fotoğrafın yüksekliği
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(defaultPhotoURL), // Varsayılan fotoğrafı göster
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: FutureBuilder<http.Response>(
+                  future: http.get(Uri.parse(
+                      'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$placePhoto&key=$API')),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return Container(); // Hata durumunda boş container döndür
+                      }
+                      if (snapshot.data!.statusCode == 200) {
+                        // Fotoğraf başarıyla alındıysa
+                        return Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: MemoryImage(snapshot.data!.bodyBytes), // Fotoğrafı göster
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Fotoğraf alınamadı
+                        return Container(); // Hata durumunda boş container döndür
+                      }
                     } else {
-                      // Fotoğraf alınamadı
-                      return Image.network(defaultPhotoURL); // Hata durumunda varsayılan fotoğrafı göster
+                      // İstek tamamlanmadıysa veya bekleniyorsa
+                      return Center(
+                        child: CircularProgressIndicator(), // İlerleme çemberi göster
+                      );
                     }
-                  } else {
-                    // İstek tamamlanmadıysa veya bekleniyorsa
-                    return CircularProgressIndicator(); // İlerleme çemberi göster
-                  }
-                },
+                  },
+                ),
               ),
-              SizedBox(height: 20), // Boşluk ekleyelim
-              Text(
-                'Hello World from $placeName\nrating: $placeRating',
-                style: TextStyle(fontSize: 24),
-                textAlign: TextAlign.center,
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  '$placeName\nRating: $placeRating',
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
+}
