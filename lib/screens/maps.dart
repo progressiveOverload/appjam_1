@@ -184,7 +184,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('My Current Map'),
+        title: const Text('Haritam'),
       ),
       body: Column(
         children: [

@@ -24,6 +24,10 @@ class _ExamplePageState extends State<SwipePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Swipe!'),
+      ),
       body: SafeArea(
         child: Column(
           children: [
