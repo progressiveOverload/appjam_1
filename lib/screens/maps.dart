@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:appjam_1/screens/placedetailscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,13 +17,13 @@ class _MapScreenState extends State<MapScreen> {
   String API_KEY = "AIzaSyC6-1byZsRdCHVXnTDP9pjvmFRuV_kuZAk";
   String place = "";
   double _distanceRange = 500;
-  double _zoom = 14;
+  final double _zoom = 14;
   GoogleMapController? _controller;
   LatLng _currentPosition = const LatLng(0, 0);
 
-  List<List<String>> _jsonDatas = [[], [], [], []];
+  final List<List<String>> _jsonDatas = [[], [], [], []];
 
-  List<String> _types = [
+  final List<String> _types = [
     'restaurant',
     'cafe',
     'bar',
@@ -36,7 +34,8 @@ class _MapScreenState extends State<MapScreen> {
     'museum', // Müze türü eklendi
   ]; // Filtreleme için kullanılacak yer türleri
   String _selectedPlaceName = '';
-  LatLng _selectedPlacePosition = LatLng(0, 0); // Seçilen yerin konumunu saklamak için
+  LatLng _selectedPlacePosition =
+      const LatLng(0, 0); // Seçilen yerin konumunu saklamak için
 
   @override
   void initState() {
@@ -95,7 +94,7 @@ class _MapScreenState extends State<MapScreen> {
             photoReference = place["photos"][0]["photo_reference"];
           }
           if (photoReference != null) {
-            _jsonDatas[3].add("$photoReference");
+            _jsonDatas[3].add(photoReference);
           } else {
             _jsonDatas[3].add("0");
           }
@@ -160,9 +159,9 @@ class _MapScreenState extends State<MapScreen> {
   Set<Marker> _createMarker() {
     Set<Marker> markers = {
       Marker(
-        markerId: MarkerId("currentLocation"),
+        markerId: const MarkerId("currentLocation"),
         position: _currentPosition,
-        infoWindow: InfoWindow(title: "Mevcut Konumunuz"),
+        infoWindow: const InfoWindow(title: "Mevcut Konumunuz"),
       ),
     };
 
@@ -248,7 +247,8 @@ class _MapScreenState extends State<MapScreen> {
                       // Lokasyon ikonuna tıklanınca yapılacak işlemler
                       _markPlaceOnMap(_jsonDatas[1][index]);
                     },
-                    child: Icon(Icons.location_on), // Lokasyon ikonu
+                          child:
+                              const Icon(Icons.location_on), // Lokasyon ikonu
                   ),
                   title: Text(_jsonDatas[1][index]),
                   trailing: GestureDetector(
@@ -262,12 +262,12 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       );
                     },
-                    child: Icon(Icons.info), // Detay ikonu
+                          child: const Icon(Icons.info), // Detay ikonu
                   ),
                 );
               },
             )
-                : Center(
+                : const Center(
               child: Text('Yakındaki yerler bulunamadı.'),
             ),
           ),
@@ -300,17 +300,18 @@ class FilterButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ElevatedButton(
         onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.red,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             text,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.red,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
       ),
     );
@@ -319,6 +320,6 @@ class FilterButton extends StatelessWidget {
 
 extension StringExtension on String {
   String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1)}";
+    return "${this[0].toUpperCase()}${substring(1)}";
   }
 }
