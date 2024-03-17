@@ -47,9 +47,9 @@ class MainMenuState extends State<MainMenu> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                    
-                    const Text(
-                      'Hoşgeldin!',
-                      style: TextStyle(
+                    Text(
+                      'Hoşgeldin !${FirebaseAuth.instance.currentUser!.displayName}',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                       ),
