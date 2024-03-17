@@ -47,6 +47,7 @@ dependencies:
   geolocator: ^11.0.0
   http: ^0.13.6
   flutter_google_places: ^0.3.0
+  lottie: ^3.0.0
 
 dev_dependencies:
   flutter_test:
