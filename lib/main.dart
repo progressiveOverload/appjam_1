@@ -1,5 +1,6 @@
 import 'package:appjam_1/screens/giris_yap.dart';
 import 'package:appjam_1/screens/my_profile.dart';
+import 'package:appjam_1/screens/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             final User? user = snapshot.data;
             if (user == null) {
-              return const GirisScreen();
+              return const WelcomeScreen();
             } else {
               return const MainMenu(); 
             }

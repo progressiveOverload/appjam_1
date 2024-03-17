@@ -48,6 +48,8 @@ dependencies:
   http: ^0.13.6
   flutter_card_swiper: ^7.0.0
   flutter_google_places: ^0.3.0
+  shared_preferences: ^2.0.8
+  lottie: ^3.0.0
 
 dev_dependencies:
   flutter_test:

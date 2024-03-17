@@ -58,6 +58,7 @@ class GirisScreenState extends State<GirisScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Giriş Yap'),
       ),
