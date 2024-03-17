@@ -14,6 +14,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   String defaultPhotoUrl = "https://th.bing.com/th/id/R.6377be1a0e7f89adf0455272f3a3efb3?rik=uUVJ3fANCDOQ5w&riu=http%3a%2f%2fwww.clker.com%2fcliparts%2fB%2fu%2fS%2fl%2fW%2fl%2fno-photo-available-hi.png&ehk=Sq1dq%2fPCrzkDhyZbWx77pSCNCb%2bRVbxFHhVf8AD%2btvM%3d&risl=&pid=ImgRaw&r=0";
+  // ignore: non_constant_identifier_names
   String API_KEY = "AIzaSyC6-1byZsRdCHVXnTDP9pjvmFRuV_kuZAk";
   String place = "";
   double _distanceRange = 500;
@@ -71,6 +72,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _fetchNearbyPlaces(type) async {
+    // ignore: prefer_interpolation_to_compose_strings
     String typesQuery = "&types=" + type;
 
 

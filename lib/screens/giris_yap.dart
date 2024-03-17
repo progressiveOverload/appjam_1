@@ -50,6 +50,7 @@ class GirisScreenState extends State<GirisScreen> {
     }
   }
 
+  // ignore: unused_element
   void _goToSignUpScreen() {
     Get.to(() => const KayitOlScreen());
   }

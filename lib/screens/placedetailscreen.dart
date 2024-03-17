@@ -5,6 +5,7 @@ class PlaceDetailsScreen extends StatelessWidget {
   final String placeName;
   final String placeRating;
   final String placePhoto;
+  // ignore: non_constant_identifier_names
   final String API;
   final String defaultPhotoURL; // Varsayılan fotoğraf URL'si
 
@@ -13,6 +14,7 @@ class PlaceDetailsScreen extends StatelessWidget {
     required this.placeName,
     required this.placePhoto,
     required this.placeRating,
+    // ignore: non_constant_identifier_names
     required this.API,
     required this.defaultPhotoURL,
   }) : super(key: key);
@@ -21,7 +23,7 @@ class PlaceDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Place Details'),
+        title: const Text('Place Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0), // Body'nin üstüne 20 birim padding ekleyelim
@@ -61,7 +63,7 @@ class PlaceDetailsScreen extends StatelessWidget {
                       }
                     } else {
                       // İstek tamamlanmadıysa veya bekleniyorsa
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(), // İlerleme çemberi göster
                       );
                     }
@@ -69,10 +71,10 @@ class PlaceDetailsScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Text(
                   '$placeName\nRating: $placeRating',
-                  style: TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 24),
                   textAlign: TextAlign.center,
                 ),
               ),
