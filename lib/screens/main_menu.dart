@@ -48,7 +48,7 @@ class MainMenuState extends State<MainMenu> {
                   children: [
                    
                     Text(
-                      'Hoşgeldin !${FirebaseAuth.instance.currentUser!.displayName}',
+                      'Hoşgeldin ${FirebaseAuth.instance.currentUser!.displayName}!',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
