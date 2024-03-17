@@ -1,3 +1,6 @@
+import 'package:appjam_1/screens/example.dart';
+import 'package:appjam_1/screens/maps.dart';
+import 'package:appjam_1/screens/swipe_page.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -112,8 +115,8 @@ class MainMenuState extends State<MainMenu> {
             setState(() => _currentIndex = index);
           },
           children: const <Widget>[
-            Center(child: Text('Home Page')),
-            Center(child: Text('Maps Page')),
+            Example(),
+            MapScreen(),
             MyProfile()
             // Add more pages here for more tabs
           ],
