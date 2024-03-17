@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:appjam_1/screens/placedetailscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,11 +15,16 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  String typesRange = "3000";
-  double _zoom = 13;
+  String defaultPhotoUrl = "https://th.bing.com/th/id/R.6377be1a0e7f89adf0455272f3a3efb3?rik=uUVJ3fANCDOQ5w&riu=http%3a%2f%2fwww.clker.com%2fcliparts%2fB%2fu%2fS%2fl%2fW%2fl%2fno-photo-available-hi.png&ehk=Sq1dq%2fPCrzkDhyZbWx77pSCNCb%2bRVbxFHhVf8AD%2btvM%3d&risl=&pid=ImgRaw&r=0";
+  String API_KEY = "AIzaSyC6-1byZsRdCHVXnTDP9pjvmFRuV_kuZAk";
+  String place = "";
+  double _distanceRange = 500;
+  double _zoom = 14;
   GoogleMapController? _controller;
   LatLng _currentPosition = const LatLng(0, 0);
-  List<String> _places = [];
+
+  List<List<String>> _jsonDatas = [[], [], [], []];
+
   List<String> _types = [
     'restaurant',
     'cafe',
@@ -60,6 +67,7 @@ class _MapScreenState extends State<MapScreen> {
 
     Position position = await Geolocator.getCurrentPosition();
     _updateCurrentPosition(position);
+
     await _fetchNearbyPlaces("");
   }
 
@@ -68,16 +76,35 @@ class _MapScreenState extends State<MapScreen> {
 
 
     final response = await http.get(Uri.parse(
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentPosition.latitude},${_currentPosition.longitude}&radius=$typesRange$typesQuery&key=AIzaSyC6-1byZsRdCHVXnTDP9pjvmFRuV_kuZAk'));
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentPosition.latitude},${_currentPosition.longitude}&radius=$_distanceRange$typesQuery&key=$API_KEY'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final results = data['results'] as List<dynamic>;
       setState(() {
-        _places.clear();
+
+        _jsonDatas[0].clear();
+        _jsonDatas[1].clear();
+        _jsonDatas[2].clear();
+        _jsonDatas[3].clear();
+        var count = 0;
+
         for (var place in results) {
-          _places.add(place['name']);
+          String? photoReference;
+          if (place["photos"] != null && place["photos"].length > 0) {
+            photoReference = place["photos"][0]["photo_reference"];
+          }
+          if (photoReference != null) {
+            _jsonDatas[3].add("$photoReference");
+          } else {
+            _jsonDatas[3].add("0");
+          }
+          count = count+1;
+          _jsonDatas[0].add(count.toString());
+          _jsonDatas[1].add(place['name']);
+          _jsonDatas[2].add(place["rating"].toString());
         }
+
       });
     } else {
       throw Exception('Failed to load nearby places');
@@ -85,7 +112,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<Map<String, dynamic>> _getPlaceDetails(String placeName) async {
-    final response = await http.get(Uri.parse('https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$placeName&inputtype=textquery&fields=geometry&key=AIzaSyC6-1byZsRdCHVXnTDP9pjvmFRuV_kuZAk'));
+    final response = await http.get(Uri.parse('https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$placeName&inputtype=textquery&fields=geometry&key=$API_KEY'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -157,7 +184,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Travel App'),
+        title: const Text('My Current Map'),
       ),
       body: Column(
         children: [
@@ -185,9 +212,10 @@ class _MapScreenState extends State<MapScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: _types.map((type) {
                 return FilterButton(
-                  text: type.replaceAll('_', ' ').capitalize(),
+                  text: type.replaceAll('_', ' '),
                   onTap: () {
                     setState(() {
+                      place = type;
                       _fetchNearbyPlaces(type);
                     });
                   },
@@ -195,16 +223,47 @@ class _MapScreenState extends State<MapScreen> {
               }).toList(),
             ),
           ),
+          Slider(
+            value: _distanceRange,
+            min: 300,
+            max: 3000,
+            divisions: 18,
+            label: '$_distanceRange m', // Slider'ın üzerinde mesafe aralığını göster
+            onChanged: (value) {
+              setState(() {
+                _distanceRange = value; // Slider'daki değeri güncelle
+                _fetchNearbyPlaces(place); // Yeni mesafe aralığına göre yakındaki yerleri yeniden yükle
+              });
+            },
+          ),
           Expanded(
-            child: _places.isNotEmpty
+            child: _jsonDatas[1].isNotEmpty
                 ? ListView.builder(
-              itemCount: _places.length,
+              itemCount: _jsonDatas[1].length,
+
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_places[index]),
-                  onTap: () {
-                    _markPlaceOnMap(_places[index]);
-                  },
+                  leading: GestureDetector(
+                    onTap: () {
+                      // Lokasyon ikonuna tıklanınca yapılacak işlemler
+                      _markPlaceOnMap(_jsonDatas[1][index]);
+                    },
+                    child: Icon(Icons.location_on), // Lokasyon ikonu
+                  ),
+                  title: Text(_jsonDatas[1][index]),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      // Detay ikonuna tıklanınca yapılacak işlemler
+                      // Örneğin detaylar için bir sayfaya yönlendirme yapabilirsiniz
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlaceDetailsScreen(placeName: _jsonDatas[1][index],placeRating:_jsonDatas[2][index] ,placePhoto: _jsonDatas[3][index], API:API_KEY, defaultPhotoURL: defaultPhotoUrl,),
+                        ),
+                      );
+                    },
+                    child: Icon(Icons.info), // Detay ikonu
+                  ),
                 );
               },
             )
@@ -212,6 +271,7 @@ class _MapScreenState extends State<MapScreen> {
               child: Text('Yakındaki yerler bulunamadı.'),
             ),
           ),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -248,8 +308,8 @@ class FilterButton extends StatelessWidget {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.red,
-          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.red,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
       ),
