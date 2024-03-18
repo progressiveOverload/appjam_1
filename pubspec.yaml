@@ -49,6 +49,7 @@ dependencies:
   flutter_google_places: ^0.3.0
   lottie: ^3.0.0
   flutter_card_swiper: ^7.0.0
+  firebase_database: ^10.4.10
 
 dev_dependencies:
   flutter_test:

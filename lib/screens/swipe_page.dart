@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
@@ -76,7 +78,7 @@ class _ExamplePageState extends State<SwipePage> {
     );
   }
 
-  bool _onSwipe(
+bool _onSwipe(
     int previousIndex,
     int? currentIndex,
     CardSwiperDirection direction,
@@ -84,6 +86,38 @@ class _ExamplePageState extends State<SwipePage> {
     debugPrint(
       'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
     );
+
+    if (currentIndex != null) {
+      final databaseReference = FirebaseDatabase(
+        databaseURL:
+            'https://appjam-1-default-rtdb.europe-west1.firebasedatabase.app',
+      ).reference().child('swipedRight');
+
+      // Use the name of the place as a unique identifier
+      String placeName = cards[currentIndex].candidate.name;
+
+      if (direction == CardSwiperDirection.right) {
+        databaseReference.child(placeName).update({
+          'name': cards[currentIndex].candidate.name,
+          'job': cards[currentIndex].candidate.job,
+          'city': cards[currentIndex].candidate.city,
+          'color': cards[currentIndex]
+              .candidate
+              .color
+              .map((color) => color.value)
+              .toList(),
+          'imageUrl': cards[currentIndex].candidate.imageUrl,
+          'rating': cards[currentIndex].candidate.rating,
+          'address': cards[currentIndex].candidate.address,
+          'swipedRight': true,
+          'user': FirebaseAuth.instance.currentUser?.uid, // Add this line
+        });
+      } else if (direction == CardSwiperDirection.left) {
+        // Remove the place from the database when swiped left
+        databaseReference.child(placeName).remove();
+      }
+    }
+
     return true;
   }
 
@@ -128,15 +162,7 @@ class ExampleCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: candidate.color,
-                ),
-              ),
-            ),
+            child: Image.network(candidate.imageUrl, fit: BoxFit.cover),
           ),
           Padding(
             padding: const EdgeInsets.all(16),
@@ -164,6 +190,16 @@ class ExampleCard extends StatelessWidget {
                   candidate.city,
                   style: const TextStyle(color: Colors.grey),
                 ),
+                const SizedBox(height: 5),
+                Text(
+                  candidate.address,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  'Rating: ${candidate.rating}',
+                  style: const TextStyle(color: Colors.grey),
+                ),
               ],
             ),
           ),
@@ -178,38 +214,60 @@ class ExampleCandidateModel {
   final String job;
   final String city;
   final List<Color> color;
+  final String imageUrl;
+  final double rating;
+  final String address;
 
   ExampleCandidateModel({
     required this.name,
     required this.job,
     required this.city,
     required this.color,
+    required this.imageUrl,
+    required this.rating,
+    required this.address,
   });
 }
 
 final List<ExampleCandidateModel> candidates = [
   ExampleCandidateModel(
-    name: 'One, 1',
-    job: 'Developer',
-    city: 'Areado',
+    name: 'Absinthe Brasserie & Bar',
+    job: 'Restaurant',
+    city: 'San Francisco',
     color: const [Color(0xFFFF3868), Color(0xFFFFB49A)],
+    imageUrl:
+        'https://images.squarespace-cdn.com/content/v1/624f382421799e11a4bac2d8/82893d80-a81b-41a6-bace-de5c8e4f23f2/11314043035_ab87655a26_k.jpg',
+    rating: 4.5,
+    address: '398 Hayes St, San Francisco, CA 94102',
   ),
   ExampleCandidateModel(
-    name: 'Two, 2',
-    job: 'Manager',
-    city: 'New York',
+    name: 'Blue Bottle Coffee',
+    job: 'Cafe',
+    city: 'Oakland',
     color: const [Color(0xFF736EFE), Color(0xFF62E4EC)],
+    imageUrl:
+        'https://res.cloudinary.com/hbhhv9rz9/image/upload/v1687376961/cafes/Gramercy%20Park/Cafe-Gramercy-Hero.jpg',
+    rating: 4.7,
+    address: '300 Webster St, Oakland, CA 94607',
   ),
   ExampleCandidateModel(
-    name: 'Three, 3',
-    job: 'Engineer',
-    city: 'London',
+    name: 'Smuggler\'s Cove',
+    job: 'Bar',
+    city: 'San Francisco',
     color: const [Color(0xFF2F80ED), Color(0xFF56CCF2)],
+    imageUrl:
+        'https://images.squarespace-cdn.com/content/v1/56e84c3cb654f9ada96c30ed/1462472252358-FXBGVQB8ACCYSYQYX2JB/bar.jpg',
+    rating: 4.8,
+    address: '650 Gough St, San Francisco, CA 94102',
   ),
   ExampleCandidateModel(
-    name: 'Four, 4',
-    job: 'Designer',
-    city: 'Tokyo',
+    name: 'Memorial Court',
+    job: 'Park',
+    city: 'Stanford',
     color: const [Color(0xFF0BA4E0), Color(0xFFA9E4BD)],
+    imageUrl:
+        'https://s3-us-west-2.amazonaws.com/stanford-125/wp-content/uploads/2015/12/Memorial_Court-cropped-2048x1231.jpg',
+    rating: 4.6,
+    address: '450 Serra Mall, Stanford, CA 94305',
   ),
 ];
