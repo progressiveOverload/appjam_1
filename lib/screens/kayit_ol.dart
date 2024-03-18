@@ -24,7 +24,7 @@ class KayitOlScreenState extends State<KayitOlScreen> {
 
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
@@ -35,11 +35,11 @@ class KayitOlScreenState extends State<KayitOlScreen> {
 
       // Show a snackbar
       Get.snackbar(
-        'Kayıt Başarılı', // title
-        'Giriş ekranına yönlendiriliyorsun', // message
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+          'Kayıt Başarılı', // title
+          'Giriş ekranına yönlendiriliyorsun', // message
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
           duration: const Duration(seconds: 1),
           margin: const EdgeInsets.all(12)
       );
@@ -85,7 +85,7 @@ class KayitOlScreenState extends State<KayitOlScreen> {
               ),
             ),
             const SizedBox(height: 20.0),
-            
+
             TextFormField(
               controller: _emailController,
               decoration: InputDecoration(
@@ -130,29 +130,29 @@ class KayitOlScreenState extends State<KayitOlScreen> {
             _isLoading
                 ? const CircularProgressIndicator()
                 : Container(
-                    height: 50.0, // Set the height of the button
-                    width: double.infinity, // Set the width of the button
-                    decoration: BoxDecoration(
-                      color: const Color(
-                          0xFF83d1d8), // Set the color of the button
-                      borderRadius: BorderRadius.circular(
-                          30.0), // Make the button circular
-                    ),
-                    child: TextButton(
-                      onPressed: _submitForm,
-                      child: const Text(
-                        'Hesap Oluştur',
-                        style: TextStyle(
-                          color: Colors.black, // Set the color of the text
-                        ),
-                      ),
-                    ),
+              height: 50.0, // Set the height of the button
+              width: double.infinity, // Set the width of the button
+              decoration: BoxDecoration(
+                color: const Color(
+                    0xFF83d1d8), // Set the color of the button
+                borderRadius: BorderRadius.circular(
+                    30.0), // Make the button circular
+              ),
+              child: TextButton(
+                onPressed: _submitForm,
+                child: const Text(
+                  'Hesap Oluştur',
+                  style: TextStyle(
+                    color: Colors.black, // Set the color of the text
                   ),
+                ),
+              ),
+            ),
             const SizedBox(height: 12.0),
             TextButton(
               onPressed: () {
                 Get.to(() =>
-                    const GirisScreen()); // Navigate to the GirisScreen when the button is pressed
+                const GirisScreen()); // Navigate to the GirisScreen when the button is pressed
               },
               child: RichText(
                 text: const TextSpan(

@@ -47,10 +47,16 @@ dependencies:
   geolocator: ^11.0.0
   http: ^0.13.6
   flutter_google_places: ^0.3.0
+  url_launcher: ^6.0.9
+  firebase_database: ^10.4.10
+  flutter_card_swiper: ^7.0.0
+  lottie: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_svg: ^2.0.9
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -73,6 +79,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/user.png
+    - assets/icon-image-not-found-free-vector.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

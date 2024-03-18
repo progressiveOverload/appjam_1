@@ -31,11 +31,11 @@ class GirisScreenState extends State<GirisScreen> {
       // Navigate to the main menu after successful login using Get
       Get.to(() => const MainMenu());
       Get.snackbar(
-        'Hoşgedin', // title
-        'Başarılı bir şekilde giriş yaptınız!', // message
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+          'Hoşgedin', // title
+          'Başarılı bir şekilde giriş yaptınız!', // message
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
           duration: const Duration(seconds: 1),
           margin: const EdgeInsets.all(12)
       );
@@ -50,6 +50,7 @@ class GirisScreenState extends State<GirisScreen> {
     }
   }
 
+  // ignore: unused_element
   void _goToSignUpScreen() {
     Get.to(() => const KayitOlScreen());
   }
@@ -114,28 +115,28 @@ class GirisScreenState extends State<GirisScreen> {
             _isLoading
                 ? const CircularProgressIndicator()
                 : Container(
-                    height: 50.0, // Set the height of the button
-                    width: double.infinity, // Set the width of the button
-                    decoration: BoxDecoration(
-                      color: const Color(
-                          0xFF6868af), // Set the color of the button
-                      borderRadius: BorderRadius.circular(
-                          30.0), // Make the button circular
-                    ),
-                    child: TextButton(
-                      onPressed: _submitForm,
-                      child: const Text(
-                        'Giriş yap',
-                        style: TextStyle(
-                          color: Colors.white, // Set the color of the text
-                        ),
-                      ),
-                    ),
+              height: 50.0, // Set the height of the button
+              width: double.infinity, // Set the width of the button
+              decoration: BoxDecoration(
+                color: const Color(
+                    0xFF6868af), // Set the color of the button
+                borderRadius: BorderRadius.circular(
+                    30.0), // Make the button circular
+              ),
+              child: TextButton(
+                onPressed: _submitForm,
+                child: const Text(
+                  'Giriş yap',
+                  style: TextStyle(
+                    color: Colors.white, // Set the color of the text
                   ),
+                ),
+              ),
+            ),
             TextButton(
               onPressed: () {
                 Get.to(() =>
-                    const KayitOlScreen()); // Navigate to the GirisScreen when the button is pressed
+                const KayitOlScreen()); // Navigate to the GirisScreen when the button is pressed
               },
               child: RichText(
                 text: const TextSpan(

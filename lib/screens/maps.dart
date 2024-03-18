@@ -21,9 +21,9 @@ class _MapScreenState extends State<MapScreen> {
   double _distanceRange = 500;
   double _zoom = 14;
   GoogleMapController? _controller;
-  LatLng _currentPosition = const LatLng(0, 0);
+  static LatLng _currentPosition = const LatLng(0, 0);
 
-  List<List<String>> _jsonDatas = [[], [], [], []];
+  List<List<String>> _jsonDatas = [[], [], [], [], []];
 
   List<String> _types = [
     'restaurant',
@@ -103,6 +103,7 @@ class _MapScreenState extends State<MapScreen> {
           _jsonDatas[0].add(count.toString());
           _jsonDatas[1].add(place['name']);
           _jsonDatas[2].add(place["rating"].toString());
+          _jsonDatas[4].add(place["place_id"].toString());
         }
 
       });
@@ -242,6 +243,7 @@ class _MapScreenState extends State<MapScreen> {
               itemCount: _jsonDatas[1].length,
 
               itemBuilder: (context, index) {
+
                 return ListTile(
                   leading: GestureDetector(
                     onTap: () {
@@ -258,17 +260,18 @@ class _MapScreenState extends State<MapScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PlaceDetailsScreen(placeName: _jsonDatas[1][index],placeRating:_jsonDatas[2][index] ,placePhoto: _jsonDatas[3][index], API:API_KEY, defaultPhotoURL: defaultPhotoUrl,),
+                          builder: (context) => PlaceDetailsScreen(placeName: _jsonDatas[1][index],placeRating:double.parse(_jsonDatas[2][index]) ,placePhoto: _jsonDatas[3][index],placeId:_jsonDatas[4][index], API:API_KEY, defaultPhotoURL: defaultPhotoUrl,),
                         ),
                       );
                     },
                     child: Icon(Icons.info), // Detay ikonu
                   ),
                 );
+
               },
             )
                 : Center(
-              child: Text('Yakındaki yerler bulunamadı.'),
+              child: CircularProgressIndicator(),
             ),
           ),
 

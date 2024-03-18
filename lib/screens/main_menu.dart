@@ -1,3 +1,4 @@
+import 'package:appjam_1/screens/swipe_page.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,7 +35,7 @@ class MainMenuState extends State<MainMenu> {
       // Prevents the user from going back
       child: Scaffold(
         drawer: Drawer(
-          
+
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
@@ -43,13 +44,13 @@ class MainMenuState extends State<MainMenu> {
                   color: Colors.purple,
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                   
-                    const Text(
-                      'Hoşgeldin!',
-                      style: TextStyle(
+
+                    Text(
+                      'Hoşgeldin ${FirebaseAuth.instance.currentUser!.displayName}!',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                       ),
@@ -57,12 +58,12 @@ class MainMenuState extends State<MainMenu> {
                     CircleAvatar(
                       radius: 25.0,
                       backgroundImage: FirebaseAuth
-                                  .instance.currentUser?.photoURL !=
-                              null
+                          .instance.currentUser?.photoURL !=
+                          null
                           ? NetworkImage(
-                              FirebaseAuth.instance.currentUser!.photoURL!)
+                          FirebaseAuth.instance.currentUser!.photoURL!)
                           : const AssetImage('assets/user.png') as ImageProvider<
-                              Object>, // Add your default profile image path here
+                          Object>, // Add your default profile image path here
                       // backgroundColor: Colors.transparent,
                     ),
                     Text(
@@ -113,7 +114,7 @@ class MainMenuState extends State<MainMenu> {
             setState(() => _currentIndex = index);
           },
           children: const <Widget>[
-            Center(child: Text('Home Page')),
+            SwipePage(),
             MapScreen(),
             MyProfile()
             // Add more pages here for more tabs

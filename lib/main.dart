@@ -1,6 +1,7 @@
 import 'package:appjam_1/screens/giris_yap.dart';
 import 'package:appjam_1/screens/maps.dart';
 import 'package:appjam_1/screens/my_profile.dart';
+import 'package:appjam_1/screens/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,11 +30,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       // Use GetMaterialApp instead of MaterialApp
       title: 'Lokal Gezgin',
-      
+
       getPages: [
         GetPage(name: '/login', page: () => const GirisScreen()),
         GetPage(name: '/mainMenu', page: () => const MainMenu()),
-        GetPage(name: '/maps', page: () => MapScreen()),
+        GetPage(name: '/maps', page: () => const MapScreen()),
         GetPage(name: '/myprofile', page: () => const MyProfile()),
       ],
       home: StreamBuilder<User?>(
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             final User? user = snapshot.data;
             if (user == null) {
-              return const GirisScreen(); // No need for const here
+              return const WelcomeScreen(); // No need for const here
             } else {
               return const MainMenu(); // No need for const here
             }
