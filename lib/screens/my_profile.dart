@@ -1,8 +1,11 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:firebase_database/firebase_database.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({Key? key}) : super(key: key);
@@ -42,6 +45,25 @@ class _MyProfileState extends State<MyProfile> {
     }
   }
 
+  Stream<List<Map<String, dynamic>>> _fetchSwipedRightPlaces() {
+    final databaseReference = FirebaseDatabase(
+      databaseURL:
+          'https://appjam-1-default-rtdb.europe-west1.firebasedatabase.app',
+    ).reference().child('swipedRight');
+
+    return databaseReference.onValue.map((event) {
+      if (event.snapshot.value != null) {
+        Map<String, dynamic> places = Map<String, dynamic>.from(
+            event.snapshot.value as Map<dynamic, dynamic>);
+        return places.values
+            .map((value) => Map<String, dynamic>.from(value))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,8 +87,8 @@ class _MyProfileState extends State<MyProfile> {
                               .instance.currentUser!.photoURL!.isNotEmpty)
                       ? NetworkImage(
                           FirebaseAuth.instance.currentUser!.photoURL!)
-                      : const AssetImage('assets/user.png') as ImageProvider<
-                          Object>, // Replace 'assets/profile.png' with your asset's path
+                      : const AssetImage('assets/user.png')
+                          as ImageProvider<Object>,
             ),
             const SizedBox(
               height: 12,
@@ -82,6 +104,49 @@ class _MyProfileState extends State<MyProfile> {
             ElevatedButton(
               onPressed: _pickImage,
               child: const Text('Profil resmini değiştir'),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            const Text(
+              'Gitmek istediğim yerler',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            StreamBuilder<List<Map<String, dynamic>>>(
+              stream: _fetchSwipedRightPlaces(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  if (snapshot.data == null || snapshot.data!.isEmpty) {
+                    return const Text("There's nothing here");
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        Map<String, dynamic> place = snapshot.data![index];
+                        if (place['imageUrl'] == null &&
+                            place['name'] == null &&
+                            place['address'] == null) {
+                          return Container();
+                        } else {
+                          return ListTile(
+                            leading: (place['imageUrl'] != null)
+                                ? Image.network(place['imageUrl'])
+                                : const Icon(Icons.image),
+                            title: Text(place['name'] ?? ''),
+                            subtitle:
+                                Text(place['address'] ?? 'Önce sağa kaydırın'),
+                          );
+                        }
+                      },
+                    );
+                  }
+                }
+              },
             ),
           ],
         ),
