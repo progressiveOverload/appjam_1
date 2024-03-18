@@ -51,6 +51,7 @@ dependencies:
   firebase_database: ^10.4.10
   flutter_card_swiper: ^7.0.0
   lottie: ^1.0.2
+  shared_preferences: ^2.0.8
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,7 @@ flutter:
   assets:
     - assets/user.png
     - assets/icon-image-not-found-free-vector.jpg
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
